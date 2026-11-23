@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A simple todo app: plan your tasks day by day." />
+  <title>Todo App</title>
+
+  <!-- În Vite, fișierele din /public se servesc de la rădăcină: /check-icon.png -->
+  <link rel="icon" type="image/png" href="/check-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" />
+</head>
+
+<body>
+  <!-- Iconițe (sprite SVG). Se folosesc cu <svg class="icon"><use href="#icon-..."></use></svg> -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
+    </symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="m12 5 7 7-7 7" />
+    </symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24">
+      <path d="M8 2v4" />
+      <path d="M16 2v4" />
+      <rect width="18" height="18" x="3" y="4" rx="2" />
+      <path d="M3 10h18" />
+    </symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="M20 6 9 17l-5-5" />
+    </symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24">
+      <path d="M3 6h18" />
+      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+    </symbol>
+  </svg>
+
+  <div class="app">
+    <main class="app__main">
+      <h1 class="visually-hidden">Todo App</h1>
+
+      <div class="panels" id="panels">
+        <!-- ===== Welcome ===== -->
+        <section class="panel panel--welcome is-active" data-panel="welcome" aria-labelledby="welcome-title">
+          <h2 class="panel__title" id="welcome-title" tabindex="-1">Welcome to Todo App</h2>
+
+          <p class="panel__text">Plan your tasks day by day and tick them off when they're done.</p>
+
+          <div class="panel__actions">
+            <button type="button" class="btn" data-open-panel="planner">Write a task</button>
+            <button type="button" class="btn" data-open-panel="tasks">See all tasks</button>
+          </div>
+        </section>
+
+        <!-- ===== Planner (taskurile unei zile) ===== -->
+        <section class="panel panel--planner" data-panel="planner" aria-labelledby="planner-title">
+          <div class="panel__content">
+            <div class="day-nav">
+              <button type="button" class="icon-btn icon-btn--dark" data-day-offset="-1" aria-label="Previous day">
+                <svg class="icon" aria-hidden="true" focusable="false">
+                  <use href="#icon-arrow-left"></use>
+                </svg>
+              </button>
+
+              <div class="day-nav__center">
+                <h2 class="day-nav__date" id="planner-title" tabindex="-1"></h2>
+                <button type="button" class="icon-btn" id="open-date-picker" aria-label="Choose a date">
+                  <svg class="icon" aria-hidden="true" focusable="false">
+                    <use href="#icon-calendar"></use>
+                  </svg>
+                </button>
+                <input type="date" class="day-nav__picker" id="date-picker" tabindex="-1" aria-label="Selected date" />
+              </div>
+
+              <button type="button" class="icon-btn icon-btn--dark" data-day-offset="1" aria-label="Next day">
+                <svg class="icon" aria-hidden="true" focusable="false">
+                  <use href="#icon-arrow-right"></use>
+                </svg>
+              </button>
+            </div>
+
+            <div class="stats" aria-live="polite">
+              <p>All tasks: <span id="stat-all">0</span></p>
+              <p>Done tasks: <span id="stat-done">0</span></p>
+            </div>
+
+            <button type="button" class="add-bar" id="open-dialog">
+              <span>Add new task</span>
+              <span class="add-bar__icon">
+                <svg class="icon" aria-hidden="true" focusable="false">
+                  <use href="#icon-plus"></use>
+                </svg>
+              </span>
+            </button>
+
+            <div class="task-list" id="day-list" tabindex="0" role="region" aria-label="Tasks for the selected day">
+            </div>
+          </div>
+
+          <div class="panel__actions">
+            <button type="button" class="btn" data-open-panel="tasks">See all tasks</button>
+          </div>
+        </section>
+
+        <!-- ===== Toate taskurile ===== -->
+        <section class="panel panel--tasks" data-panel="tasks" aria-labelledby="tasks-title">
+          <h2 class="panel__title" id="tasks-title" tabindex="-1">See all tasks</h2>
+
+          <div class="panel__content">
+            <div class="filters" role="group" aria-label="Filter tasks">
+              <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All Tasks</button>
+              <button type="button" class="filter-btn" data-filter="done" aria-pressed="false">Done Tasks</button>
+              <button type="button" class="filter-btn" data-filter="not-done" aria-pressed="false">Not Done
+                Tasks</button>
+            </div>
+
+            <div class="task-list task-list--tall" id="all-list" tabindex="0" role="region" aria-label="All tasks">
+            </div>
+          </div>
+
+          <div class="panel__actions">
+            <button type="button" class="btn" data-open-panel="planner">Write a task</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="app__footer">
+      <p>&copy; 2026 Maverick inc.<br />All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Fereastra "Add New Task": <dialog> nativ (Escape, focus trap și backdrop vin gratis) -->
+  <dialog class="dialog" id="task-dialog" aria-labelledby="dialog-title">
+    <div class="dialog__top">
+      <h2 class="dialog__title" id="dialog-title">Add New Task</h2>
+      <button type="button" class="icon-btn" data-close-dialog aria-label="Close">
+        <svg class="icon" aria-hidden="true" focusable="false">
+          <use href="#icon-close"></use>
+        </svg>
+      </button>
+    </div>
+
+    <hr class="dialog__line" />
+
+    <form class="form" id="task-form" autocomplete="off">
+      <div class="form__field">
+        <label class="form__label" for="task-title">Task Title</label>
+        <input class="form__input" id="task-title" type="text" name="title" maxlength="80" required autofocus />
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="task-due-date">Due Date</label>
+        <input class="form__input" id="task-due-date" type="date" name="dueDate" required />
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="task-description">Description</label>
+        <textarea class="form__input form__input--textarea" id="task-description" name="description" rows="4"
+          maxlength="300"></textarea>
+      </div>
+
+      <button type="submit" class="form__submit">Add task</button>
+    </form>
+  </dialog>
+
+  <!-- Șablon pentru un task: îl clonăm din JS, fără innerHTML -->
+  <template id="task-template">
+    <article class="task">
+      <h3 class="task__title"></h3>
+      <p class="task__date"></p>
+      <p class="task__description"></p>
+      <div class="task__actions">
+        <button type="button" class="task__btn" data-action="toggle" aria-label="Mark as done" aria-pressed="false">
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use href="#icon-check"></use>
+          </svg>
+        </button>
+        <button type="button" class="task__btn" data-action="delete" aria-label="Delete task" disabled>
+          <svg class="icon" aria-hidden="true" focusable="false">
+            <use href="#icon-trash"></use>
+          </svg>
+        </button>
+      </div>
+    </article>
+  </template>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

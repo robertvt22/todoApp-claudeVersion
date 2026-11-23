@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/check-icon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo App</title>
+</head>
+
+<body>
+
+
+    <div class="app">
+
+        <main class="main-dashboard">
+            <div class="panel-container">
+
+                <section class="panel panel-welcome is-active" data-panel="welcome">
+                    <h2 class="panel-title">Welcome to Todo App</h2>
+
+                    <div class="panel-content"></div>
+
+                    <div class="panel-actions">
+                        <button type="button" class="btn-panel btn-panel-input" data-target="input">Write a
+                            task</button>
+                        <button type="button" class="btn-panel btn-panel-task" data-target="task">See all tasks</button>
+                    </div>
+                </section>
+
+                <section class="panel panel-input" data-panel="input">
+
+
+                    <div class="panel-content">
+
+
+                        <div class="todo-calendar">
+                            <button class="btn-todo-arrow btn-todo-arrow-left">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+
+                            <div class="date-todo">
+                                <h2 class="curent-date-todo"></h2>
+                                <button class="btn-todo-calendar">
+                                    <i class="fa-regular fa-calendar-days"></i>
+                                </button>
+                                <input type="date" class="hidden-date" id="hiddenDate" />
+                            </div>
+
+                            <button class="btn-todo-arrow btn-todo-arrow-right">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="todo-stats">
+                            <h3 class="todo-stats-allTask">All task: <span class="todo-allTask">-</span></h3>
+                            <h3 class="todo-stats-doneTask">Done task: <span class="todo-doneTask">-</span></h3>
+                        </div>
+
+
+                        <div class="todo-input">
+                            <h3 class="todo-input-desc">Add new task</h3>
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+
+                        <div class="todo-task-container">
+
+                        </div>
+
+
+                        <div class="todo-input-window">
+                            <div class="todo-input-window-top">
+                                <h3 class="todo-input-window-title">Add New Task</h3>
+                                <button class="btn-input-window-close">
+                                    <i class="fa-solid fa-x"></i>
+                                </button>
+                            </div>
+                            <hr class="todo-input-window-line">
+
+                            <form class="todo-form" autocomplete="off">
+
+                                <div class="todo-form-field">
+                                    <label class="todo-form-label" for="todo-form-title">Task Title</label>
+                                    <input class="todo-form-input" type="text" name="title" maxlength="80" required>
+                                </div>
+
+                                <div class="todo-form-field">
+                                    <label class="todo-form-label" for="todo-form-due">Due Date</label>
+                                    <input class="todo-form-input" type="date" name="dueDate">
+                                </div>
+
+                                <div class="todo-form-field">
+                                    <label class="todo-form-label" for="todo-form-description">Description</label>
+                                    <textarea class="todo-form-input input-textarea" id="todo-form-description"
+                                        name="description" rows="4" maxlength="300"></textarea>
+                                </div>
+
+                                <button type="submit" class="todo-form-btn">Add</button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="panel-actions">
+                        <button type="button" class="btn-panel btn-panel-task" data-target="task">See all tasks</button>
+                    </div>
+                </section>
+
+                <section class="panel panel-task" data-panel="task">
+                    <h2 class="panel-title">See all tasks</h2>
+
+                    <div class="todo-buttons-tasks">
+                        <button class="todo-btn-task todo-btn-taskAll">All Tasks</button>
+                        <button class="todo-btn-task todo-btn-taskDone">Done Tasks</button>
+                        <button class="todo-btn-task todo-btn-taskNotDone">Not Done Task</button>
+                    </div>
+
+                    <div class="panel-content">
+                        <div class="todo-task-container">
+                        </div>
+
+                    </div>
+
+                    <div class="panel-actions">
+                        <button type="button" class="btn-panel btn-panel-input" data-target="input">Write a
+                            task</button>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <footer class="footer-dashboard">
+            <p class="footer-description">
+                ©2026 Maverick inc. <br>
+                All rights reserved.
+            </p>
+        </footer>
+
+    </div>
+
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

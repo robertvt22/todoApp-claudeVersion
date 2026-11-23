@@ -1,0 +1,529 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap");
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: linear-gradient(180deg, #c07325 0%, #302b2b 100%);
+    --bg-panel-1: linear-gradient(180deg, #5c330a 0%, #c27332 100%);
+    --bg-panel-2: linear-gradient(180deg, #653f1a 0%, #b38057 100%);
+    --bg-panel-3: linear-gradient(180deg, #573c22 0%, #dc8640 100%);
+
+    --bgc-primary: #dc8640;
+    --bgc-dark: #252423;
+    --bgc-mid: #657383;
+    --bgc-light: #657383da;
+
+    --text-primary: #dc8640;
+    --text-dark: #252423;
+    --text-mid: #657383;
+    --text-light: #d0d0d0;
+
+    --border-default: 1px solid #3f4247;
+    --outline-default: 2px solid #3f4247;
+    --border-mid: 2px solid #657383;
+    --border-primary: 2px solid #dc8640;
+
+    --shadow-elevated: 0px 0px 24px 3px #ac6911ff;
+    --shadow-active: 0 4px 12px rgba(5, 22, 50, 0.2);
+
+    --radius-lg: 1rem;
+    --radius-md: 0.5rem;
+    --radius-sm: 0.2rem;
+}
+
+body {
+    font-family: "Roboto Slab", serif;
+    font-size: 1.25rem;
+    line-height: 1.6;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.app {
+    min-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    background: var(--bg-primary);
+}
+
+.main-dashboard {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-container {
+    width: 100%;
+    display: grid;
+}
+
+.panel {
+    width: 100%;
+    min-height: 30rem;
+    display: none;
+    grid-area: 1/1;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    border: var(--border-default);
+    box-shadow: var(--shadow-elevated);
+    border-radius: var(--radius-lg);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(1rem);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.panel-welcome {
+    background: var(--bg-panel-1);
+}
+
+.panel-input {
+    position: relative;
+    background: var(--bg-panel-2);
+}
+
+.panel-task {
+    background: var(--bg-panel-3);
+}
+
+.panel.is-active {
+    display: flex;
+    animation: panel-in 0.4s ease;
+}
+
+.is-active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.panel-title {
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1;
+    color: var(--text-light);
+}
+
+.panel-content {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.panel-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-panel {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--bgc-primary);
+    color: var(--text-dark);
+    border-radius: var(--radius-lg);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.01rem;
+    line-height: 1;
+    box-shadow: var(--shadow-elevated);
+    cursor: pointer;
+    appearance: none;
+    border: none;
+    outline: none;
+    user-select: none;
+    transition: all 0.5s ease;
+}
+
+.btn-panel:hover {
+    background: var(--bg-panel-1);
+    transform: translateY(-0.2rem);
+}
+
+.btn-panel:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-active);
+}
+
+.btn-panel:focus-visible {
+    outline: var(--outline-default);
+}
+
+.btn-panel:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    pointer-events: none;
+}
+
+/* PANEL TASK */
+
+.todo-calendar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-todo-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    padding: 0.4rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--bgc-dark);
+    color: var(--bgc-primary);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.date-todo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-todo-calendar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    padding: 0.4rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--bgc-primary);
+    color: var(--bgc-dark);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.curent-date-todo {
+    color: var(--text-dark);
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1;
+}
+
+.hidden-date {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+.todo-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.45rem 1rem;
+    background-color: var(--bgc-mid);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+.todo-input-desc {
+    font-size: 1rem;
+}
+
+.fa-plus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    padding: 0.2rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--bgc-primary);
+    color: var(--bgc-dark);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.todo-input-window {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+    min-height: 25rem;
+    background-color: var(--bgc-light);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.todo-input-window-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.todo-input-window-title {
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+.btn-input-window-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bgc-primary);
+    color: var(--bgc-dark);
+    padding: 0.4rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.todo-input-window-line {
+    padding: 0.1rem;
+    border-radius: var(--radius-lg);
+    background-color: var(--bgc-dark);
+    border: none;
+    outline: none;
+}
+
+.todo-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.todo-form-label {
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.todo-form-input {
+    font-family: inherit;
+    width: 100%;
+    padding: 0.2rem;
+}
+
+.input-textarea {
+    padding: 0.2rem;
+}
+
+.todo-form-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bgc-dark);
+    color: var(--bgc-primary);
+    padding: 0.4rem;
+    font-size: 1.2rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.panel-input.is-dimmed .panel-content > :not(.todo-input-window) {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.todo-input-window.is-active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0s;
+}
+
+.footer-dashboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-description {
+    color: var(--text-mid);
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1;
+}
+
+.todo-task-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    height: 15rem;
+    overflow-y: auto;
+    padding-right: 0.5rem; /* spațiu între conținut și scrollbar */
+    padding-bottom: 0.1rem;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--bgc-mid) transparent; /* thumb  track */
+}
+
+.panel-task .todo-task-container {
+    height: 25rem;
+}
+
+/*
+.panel-task .todo-task-container {
+    height: 30rem;
+}
+    */
+
+.todo-task-content {
+    min-width: 0;
+    padding: 1rem;
+    background-color: var(--bgc-primary);
+    border: var(--border-mid);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.todo-task-content.completed {
+    background-color: var(--bgc-light);
+    border: var(--border-primary);
+}
+
+.todo-task-content.completed .todo-task-title,
+.todo-task-content.completed .todo-task-currentDate,
+.todo-task-content.completed .todo-task-description {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.todo-task-title {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.todo-task-currentDate {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.todo-task-description {
+    font-size: 1rem;
+    line-height: 1;
+    overflow-wrap: anywhere;
+}
+
+.todo-task-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.todo-task-check,
+.todo-task-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bgc-light);
+    color: var(--bgc-dark);
+    font-size: 1rem;
+    padding: 0.2rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.todo-task-delete {
+    pointer-events: none;
+    opacity: 0.2;
+}
+
+.todo-task-content.completed .todo-task-delete,
+.todo-task-content.completed .todo-task-check {
+    background-color: var(--bgc-primary);
+    color: var(--bgc-dark);
+}
+
+.todo-task-content.completed .todo-task-delete {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.todo-stats {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.todo-stats-allTask,
+.todo-stats-doneTask {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.todo-buttons-tasks {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.todo-btn-task {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 0.4rem;
+    border-radius: var(--radius-md);
+    background-color: var(--bgc-light);
+    color: var(--text-primary);
+    outline: none;
+    border: var(--border-default);
+    cursor: pointer;
+}
+
+@keyframes panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

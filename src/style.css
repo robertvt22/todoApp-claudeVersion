@@ -1,0 +1,530 @@
+/* =========================
+   TOKENS
+========================= */
+:root {
+    --gradient-page: linear-gradient(180deg, #c07325 0%, #302b2b 100%);
+    --gradient-welcome: linear-gradient(180deg, #5c330a 0%, #c27332 100%);
+    --gradient-planner: linear-gradient(180deg, #653f1a 0%, #b38057 100%);
+    --gradient-tasks: linear-gradient(180deg, #573c22 0%, #dc8640 100%);
+
+    --color-accent: #dc8640;
+    --color-accent-hover: #f09a52;
+    --color-dark: #252423;
+    --color-slate: #657383;
+    --color-slate-translucent: #657383da;
+    --color-text-light: #d0d0d0;
+    --color-border: #3f4247;
+
+    --shadow-glow: 0 0 24px 3px #ac6911;
+
+    --radius-lg: 1rem;
+    --radius-md: 0.5rem;
+    --radius-sm: 0.2rem;
+}
+
+/* =========================
+   RESET + BASE
+========================= */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--color-dark);
+    font-family: "Roboto Slab", serif;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+:focus-visible {
+    outline: 3px solid var(--color-text-light);
+    outline-offset: 2px;
+}
+
+[tabindex="-1"]:focus {
+    outline: none;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.sprite {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.icon {
+    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.app {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 2rem 1rem;
+    background: var(--gradient-page);
+}
+
+.app__main {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.app__footer {
+    color: var(--color-text-light);
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* Toate panourile stau în aceeași celulă de grid și se suprapun; doar unul e vizibil. */
+.panels {
+    display: grid;
+    width: 100%;
+    max-width: 32rem;
+}
+
+/* =========================
+   PANOURI
+========================= */
+.panel {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-height: 30rem;
+    padding: 2rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glow);
+
+    /* Starea ascunsă: fade-out + visibility (după fade) scoate panoul din tab și din cititorul de ecran. */
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(1rem);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s linear 0.4s;
+}
+
+.panel.is-active {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition-delay: 0s;
+}
+
+.panel--welcome {
+    background: var(--gradient-welcome);
+}
+
+.panel--planner {
+    background: var(--gradient-planner);
+}
+
+.panel--tasks {
+    background: var(--gradient-tasks);
+}
+
+.panel__title {
+    color: var(--color-text-light);
+    font-size: 1.2rem;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.panel__text {
+    flex: 1;
+    color: var(--color-text-light);
+    text-align: center;
+}
+
+.panel__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+}
+
+.panel__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* =========================
+   BUTOANE
+========================= */
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: var(--color-accent);
+    color: var(--color-dark);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.01rem;
+    line-height: 1;
+    box-shadow: var(--shadow-glow);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-0.2rem);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.icon-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-dark);
+    font-size: 1.2rem;
+}
+
+.icon-btn--dark {
+    background: var(--color-dark);
+    color: var(--color-accent);
+}
+
+/* =========================
+   PLANNER
+========================= */
+.day-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.day-nav__center {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.day-nav__date {
+    color: var(--color-text-light);
+    font-size: 1rem;
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* Input-ul real pentru dată: invizibil, dar poziționat sub buton ca să se deschidă acolo calendarul. */
+.day-nav__picker {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+    color: var(--color-text-light);
+}
+
+.add-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.45rem 1rem;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--color-slate);
+    color: #000;
+    font-weight: 600;
+    text-align: left;
+}
+
+.add-bar__icon {
+    display: flex;
+    padding: 0.2rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-dark);
+    font-size: 1.2rem;
+}
+
+/* =========================
+   LISTA DE TASKURI
+========================= */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 15rem;
+    padding-right: 0.5rem; /* spațiu între conținut și scrollbar */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-slate) transparent;
+}
+
+.task-list--tall {
+    height: 25rem;
+}
+
+.task-list__empty {
+    color: var(--color-text-light);
+    text-align: center;
+}
+
+.task {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    padding: 1rem;
+    border: 2px solid var(--color-slate);
+    border-radius: var(--radius-md);
+    background: var(--color-accent);
+}
+
+.task--completed {
+    border-color: var(--color-accent);
+    background: var(--color-slate-translucent);
+}
+
+.task--completed .task__title,
+.task--completed .task__date,
+.task--completed .task__description {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.task__title {
+    font-size: 1.2rem;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.task__date {
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.task__description {
+    font-size: 1rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap; /* păstrează rândurile noi scrise în textarea */
+}
+
+.task__description:empty {
+    display: none;
+}
+
+.task__actions {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.task__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.3rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--color-slate-translucent);
+    color: var(--color-dark);
+    font-size: 1.1rem;
+}
+
+.task--completed .task__btn {
+    background: var(--color-accent);
+}
+
+.task__btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* =========================
+   FILTRE
+========================= */
+.filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    width: 100%;
+    max-width: 14rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-dark);
+    color: var(--color-accent);
+    font-size: 1.1rem;
+    line-height: 1.2;
+}
+
+.filter-btn[aria-pressed="true"] {
+    background: var(--color-accent);
+    color: var(--color-dark);
+}
+
+/* =========================
+   DIALOG + FORMULAR
+========================= */
+.dialog {
+    width: min(92vw, 28rem);
+    margin: auto;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-dark);
+    color: var(--color-text-light);
+}
+
+.dialog::backdrop {
+    background: rgb(0 0 0 / 0.6);
+}
+
+.dialog__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dialog__title {
+    font-size: 1.1rem;
+}
+
+.dialog__line {
+    margin: 1rem 0;
+    height: 2px;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: var(--color-slate);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.form__label {
+    font-size: 1rem;
+}
+
+.form__input {
+    width: 100%;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--color-slate);
+    border-radius: var(--radius-sm);
+    background: #f3efe9;
+    color: var(--color-dark);
+}
+
+.form__input--textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+.form__submit {
+    padding: 0.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--color-accent);
+    color: var(--color-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.form__submit:hover {
+    background: var(--color-accent-hover);
+}
+
+/* =========================
+   MIȘCARE REDUSĂ
+========================= */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+    }
+
+    .btn:hover {
+        transform: none;
+    }
+}
